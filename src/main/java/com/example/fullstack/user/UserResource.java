@@ -3,9 +3,8 @@ package com.example.fullstack.user;
 import java.util.List;
 
 import org.jboss.resteasy.reactive.ResponseStatus;
-
-import io.quarkus.vertx.ConsumeEvent;
 import io.smallrye.mutiny.Uni;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -20,6 +19,7 @@ public class UserResource
 {
     private final UserService userService;
 
+    @Inject
     public UserResource(UserService userService)
     {
         this.userService = userService;
