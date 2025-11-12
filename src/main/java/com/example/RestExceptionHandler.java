@@ -38,7 +38,7 @@ public class RestExceptionHandler implements ExceptionMapper<HibernateException>
         Throwable throwable, String code)
     {
                 return getExceptionInChain(throwable, PgException.class)
-                .filter(ex -> Objects.equals(ex.getCode(), code))
+                .filter(ex -> Objects.equals(ex.getSqlState(), code))
                 .isPresent();
     }
 
