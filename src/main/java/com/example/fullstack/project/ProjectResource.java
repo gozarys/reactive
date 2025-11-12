@@ -13,6 +13,7 @@ import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
 
 @Path("/api/v1/projects")
@@ -32,6 +33,13 @@ public class ProjectResource
         return projectService.listForUser();
     }
 
+    @GET
+    @Path("{id}")
+    public Uni<Project> getProject(@PathParam("id") long id)
+    {
+        return projectService.findById(id);
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @ResponseStatus(201)
@@ -43,7 +51,7 @@ public class ProjectResource
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("{id}")
-    public Uni<Project> updateProject(long id, Project project)
+    public Uni<Project> updateProject(@PathParam("id") long id, Project project)
     {
         project.id = id;
         return projectService.update(project);
@@ -51,7 +59,7 @@ public class ProjectResource
 
     @DELETE
     @Path("{id}")
-    public Uni<Void> deleteProject(long id)
+    public Uni<Void> deleteProject( @PathParam("id") long id)
     {
         return projectService.delete(id);
     }
