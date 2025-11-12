@@ -4,8 +4,13 @@ import java.util.List;
 
 import org.hibernate.ObjectNotFoundException;
 
+import com.example.fullstack.project.Project;
+import com.example.fullstack.task.Task;
+
+import io.quarkus.elytron.security.common.BcryptUtil;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class UserService
@@ -24,5 +29,36 @@ public class UserService
     public Uni<List<User>> list()
     {
         return User.listAll();
+    }
+
+    @Transactional
+    public Uni<User> create(User user)
+    {
+        user.password = BcryptUtil.bcryptHash(user.password);
+        return user.persistAndFlush();
+    }
+
+    @Transactional
+    public Uni<User> update(User user)
+    {
+        return findById(user.id)
+        .chain(u -> User.getSession())
+        .chain(session -> session.merge(user));
+    }
+
+    @Transactional
+    public Uni<Void> delete(long id)
+    {
+        return findById(id)
+        .chain(u -> Uni.combine().all().unis(
+            Task.delete("user.id", u.id),
+            Project.delete("user.id", u.id)
+        ).asTuple()
+        .chain(t -> u.delete()));
+    }
+
+    public Uni<User> getCurrentUser()
+    {
+        return User.find("order by ID").firstResult();
     }
 }
