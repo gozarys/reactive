@@ -6,6 +6,7 @@ import java.util.List;
 import org.jboss.resteasy.reactive.ResponseStatus;
 
 import io.smallrye.mutiny.Uni;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -17,6 +18,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.core.MediaType;
 
 @Path("/api/v1/projects")
+@RolesAllowed("user")
 public class ProjectResource
 {
     private final ProjectService projectService;
