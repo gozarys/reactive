@@ -8,6 +8,7 @@ import com.example.fullstack.project.Project;
 import com.example.fullstack.task.Task;
 
 import io.quarkus.elytron.security.common.BcryptUtil;
+import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.transaction.Transactional;
@@ -21,6 +22,7 @@ public class UserService
         .onItem().ifNull().failWith(() -> new ObjectNotFoundException(id, "User"));
     }
 
+    @WithSession
     public Uni<User> findByname(String name)
     {
         return User.<User>find("name", name).firstResult();
