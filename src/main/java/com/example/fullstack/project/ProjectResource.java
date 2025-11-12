@@ -34,7 +34,7 @@ public class ProjectResource
     }
 
     @GET
-    @Path("{id}")
+    @Path("/{id}")
     public Uni<Project> getProject(@PathParam("id") long id)
     {
         return projectService.findById(id);
@@ -50,7 +50,7 @@ public class ProjectResource
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("{id}")
+    @Path("/{id}")
     public Uni<Project> updateProject(@PathParam("id") long id, Project project)
     {
         project.id = id;
@@ -58,11 +58,9 @@ public class ProjectResource
     }
 
     @DELETE
-    @Path("{id}")
+    @Path("/{id}")
     public Uni<Void> deleteProject( @PathParam("id") long id)
     {
         return projectService.delete(id);
     }
-    
-
 }

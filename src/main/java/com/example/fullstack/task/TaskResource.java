@@ -33,7 +33,7 @@ public class TaskResource
     }
 
     @GET
-    @Path("{id}")
+    @Path("/{id}")
     public Uni<Task> get(@PathParam("id") long id)
     {
         return taskService.findById(id);
@@ -49,7 +49,7 @@ public class TaskResource
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    @Path("{id}")
+    @Path("/{id}")
     public Uni<Task> updateTask(@PathParam("id") long id, Task task)
     {
         task.id = id;
@@ -57,14 +57,14 @@ public class TaskResource
     }
 
     @DELETE
-    @Path("{id}")
+    @Path("/{id}")
     public Uni<Void> deleteTask(@PathParam("id") long id)
     {
         return taskService.delete(id);
     }
 
     @PUT
-    @Path("{id}/complete")
+    @Path("/{id}/complete")
     public Uni<Boolean> completeTask(@PathParam("id") long id, boolean complete)
     {
         return taskService.setComplete(id, complete);
