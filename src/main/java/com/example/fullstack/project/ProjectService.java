@@ -7,11 +7,11 @@ import org.hibernate.ObjectNotFoundException;
 import com.example.fullstack.task.Task;
 import com.example.fullstack.user.UserService;
 
+import io.quarkus.hibernate.reactive.panache.common.WithTransaction;
 import io.quarkus.security.UnauthorizedException;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 
 @ApplicationScoped
 public class ProjectService
@@ -45,7 +45,7 @@ public class ProjectService
         .chain(user -> Project.find("user", user).list());
     }
 
-    @Transactional
+    @WithTransaction
     public Uni<Project> create(Project project)
     {
         return userService.getCurrentUser()
@@ -55,7 +55,7 @@ public class ProjectService
         });
     }
 
-    @Transactional
+    @WithTransaction
     public Uni<Project> update(Project project)
     {
         return findById(project.id)
@@ -63,7 +63,7 @@ public class ProjectService
         .chain(s -> s.merge(project));
     }
 
-    @Transactional
+    @WithTransaction
     public Uni<Void> delete(long id)
     {
         return findById(id)
