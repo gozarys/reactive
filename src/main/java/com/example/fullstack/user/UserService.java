@@ -15,7 +15,6 @@ import io.quarkus.hibernate.reactive.panache.common.WithSession;
 import io.smallrye.mutiny.Uni;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
-import jakarta.transaction.Transactional;
 import jakarta.ws.rs.ClientErrorException;
 import jakarta.ws.rs.core.Response;
 
@@ -48,14 +47,14 @@ public class UserService
         return User.listAll();
     }
 
-    @Transactional
+    @WithTransaction
     public Uni<User> create(User user)
     {
         user.password = BcryptUtil.bcryptHash(user.password);
         return user.persistAndFlush();
     }
 
-    @Transactional
+    @WithTransaction
     public Uni<User> update(User user)
     {
         return findById(user.id)
@@ -66,7 +65,7 @@ public class UserService
         .chain(s -> s.merge(user));
     }
 
-    @Transactional
+    @WithTransaction
     public Uni<Void> delete(long id)
     {
         return findById(id)
