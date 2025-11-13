@@ -31,7 +31,7 @@ class ProjectResourceTest
             "[0].name", is("Work"));
     }
 
-        @Test
+    @Test
     @TestSecurity(user = "admin", roles = "user")
     void create()
     {
